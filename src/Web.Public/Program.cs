@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Web.Public.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+
+// Extract and declare connection string
+string? defaultConnectionStr = builder.Configuration.GetConnectionString("Default");
+
+if (String.IsNullOrEmpty(defaultConnectionStr)) {
+    throw new ArgumentNullException("Connection string can not be null");
+}
 
 var app = builder.Build();
 
