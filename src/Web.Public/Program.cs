@@ -9,7 +9,14 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 // Repository dependcy injection.
-builder.Services.AddSingleton<MySqlConnectionFactory>();
+builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
+{
+    var connectionString =
+        builder.Configuration.GetConnectionString("Default")
+        ?? throw new InvalidOperationException();
+
+    return new MySqlConnectionFactory(connectionString);
+});
 
 var app = builder.Build();
 

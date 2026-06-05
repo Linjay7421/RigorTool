@@ -1,19 +1,15 @@
 ﻿using MySqlConnector;
 namespace Web.Public.Repository
 {
-    public class MySqlConnectionFactory
+    public class MySqlConnectionFactory: IDbConnectionFactory
     {
-        private readonly string? _connectionStr;
-        
-        public MySqlConnectionFactory(IConfiguration config)
+        private readonly string _connectionString;
+
+        public MySqlConnectionFactory(string connectionString)
         {
-            this._connectionStr = config.GetConnectionString("Default");
-            if (String.IsNullOrEmpty(this._connectionStr))
-            {
-                throw new ArgumentNullException("Connection string can not be null");
-            }
+            _connectionString = connectionString;
         }
 
-        public MySqlConnection CreateConnection => new MySqlConnection(this._connectionStr);
+        public MySqlConnection CreateConnection() => new MySqlConnection(_connectionString);
     }
 }
