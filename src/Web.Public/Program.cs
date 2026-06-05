@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Web.Public.Components;
+using Web.Public.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,13 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-
-// Extract and declare connection string
-string? defaultConnectionStr = builder.Configuration.GetConnectionString("Default");
-
-if (String.IsNullOrEmpty(defaultConnectionStr)) {
-    throw new ArgumentNullException("Connection string can not be null");
-}
+// Repository dependcy injection.
+builder.Services.AddSingleton<MySqlConnectionFactory>();
 
 var app = builder.Build();
 
