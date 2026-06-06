@@ -39,12 +39,12 @@ namespace Web.Public.Repository
             return products;
         }
 
-        public async Task<Product> GetProductByIdAsync(int productId)
+        public async Task<Product?> GetProductByIdAsync(Guid productId)
         {
             await using var connection = _connectionFactory.CreateConnection();
             await connection.OpenAsync();
 
-            const string sql = @"SELECT [Id], [Name] FROM [Product] WHERE [Id] = @ProductId";
+            const string sql = @"SELECT Id, Name FROM Products WHERE Id = @ProductId";
 
             await using var command = new MySqlCommand(sql, connection);
             command.Parameters.AddWithValue("@ProductId", productId);
