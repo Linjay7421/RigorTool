@@ -1,5 +1,4 @@
 ﻿using MySqlConnector;
-using System.Xml.Linq;
 using Web.Public.Common;
 
 namespace Web.Public.Repository
@@ -22,7 +21,7 @@ namespace Web.Public.Repository
 
             await connection.OpenAsync();
 
-            var sql = "[SELECT] * FROM [Product]";
+            var sql = "SELECT * FROM Products";
 
             await using var command = new MySqlCommand(sql, connection);
 
@@ -32,7 +31,7 @@ namespace Web.Public.Repository
             {
                 products.Add(new Product
                 {
-                    Id = reader.GetInt32("Id"),
+                    Id = reader.GetGuid("Id"),
                     Name = reader.GetString("Name")
                 });
             }
@@ -56,7 +55,7 @@ namespace Web.Public.Repository
             {
                 return new Product
                 {
-                    Id = reader.GetInt32("Id"),
+                    Id = reader.GetGuid("Id"),
                     Name = reader.GetString("Name")
                 };
             }
@@ -87,7 +86,7 @@ namespace Web.Public.Repository
             {
                 products.Add(new Product
                 {
-                    Id = reader.GetInt32("Id"),
+                    Id = reader.GetGuid("Id"),
                     Name = reader.GetString("Name")
                 });
             }
@@ -127,7 +126,7 @@ namespace Web.Public.Repository
             {
                 products.Add(new Product
                 {
-                    Id = reader.GetInt32("Id"),
+                    Id = reader.GetGuid("Id"),
                     Name = reader.GetString("Name")
                 });
             }
