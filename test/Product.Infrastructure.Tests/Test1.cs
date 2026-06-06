@@ -6,10 +6,10 @@ namespace Product.Infrastructure.Tests
     public sealed class Test1
     {
         private const string TestConnectionString =
-        "Server=localhost;Port=13306;Database=ProductDB_Test;Uid=root;Pwd=MyStrongPass123!;";
+        "Server=localhost;Port=13306;Database=ProductDB;Uid=root;Pwd=MyStrongPass123!;";
 
         [TestMethod]
-        public async Task GetAllProducts_ShouldReturnProducts()
+        public async Task GetAllProducts_ShouldReturnAllProducts()
         {
             var factory = new MySqlConnectionFactory(TestConnectionString);
             var repository = new RawSqlProductRepository(factory);
