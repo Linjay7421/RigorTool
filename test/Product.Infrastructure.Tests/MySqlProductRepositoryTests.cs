@@ -3,7 +3,7 @@
 namespace Product.Infrastructure.Tests
 {
     [TestClass]
-    public sealed class Test1
+    public sealed class MySqlProductRepositoryTests
     {
         private const string TestConnectionString =
         "Server=localhost;Port=13306;Database=ProductDB;Uid=root;Pwd=MyStrongPass123!;";
