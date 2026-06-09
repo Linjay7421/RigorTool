@@ -10,7 +10,7 @@ namespace Product.Infrastructure.Tests
         private Guid TestProductId = Guid.Parse("11111111-1111-1111-1111-111111111111");
 
         [TestMethod]
-        public async Task GetAllProducts_ShouldReturnAllProducts()
+        public async Task GetAll_ShouldReturnAllProducts()
         {
             var factory = new MySqlConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
@@ -21,7 +21,7 @@ namespace Product.Infrastructure.Tests
         }
 
         [TestMethod]
-        public async Task GetProductById_ShouldReturnProdcut() {
+        public async Task GetById_ShouldReturnProdcut() {
             var factory = new MySqlConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
 
@@ -32,12 +32,42 @@ namespace Product.Infrastructure.Tests
         }
 
         [TestMethod]
-        public async Task GetProductsByCategory_ShouldReturnProducts() 
+        public async Task GetPaged_ShouldReturnPagedDto() 
         {
             var factory = new MySqlConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
             
             var result = await prodcutReader.GetPagedAsync(1, 2);
+
+            Assert.IsNotNull(result);
+            Assert.IsGreaterThan(0, result.TotalCount);
+            Assert.AreEqual(1, result.PageNumber);
+            Assert.AreEqual(2, result.PageSize);
+            Assert.IsGreaterThanOrEqualTo(result.Items.Count, 1);
+        }
+
+        [TestMethod]
+        public async Task GetPagedByCategory_ShouldReturnPagedDto()
+        {
+            var factory = new MySqlConnectionFactory(TestConnectionString);
+            var prodcutReader = new RawSqlProductRepository(factory);
+
+            var result = await prodcutReader.GetPagedAsync(1, 2);
+
+            Assert.IsNotNull(result);
+            Assert.IsGreaterThan(0, result.TotalCount);
+            Assert.AreEqual(1, result.PageNumber);
+            Assert.AreEqual(2, result.PageSize);
+            Assert.IsGreaterThanOrEqualTo(result.Items.Count, 1);
+        }
+
+        [TestMethod]
+        public async Task GetPagedByKeyword_ShouldReturnPagedDto()
+        {
+            var factory = new MySqlConnectionFactory(TestConnectionString);
+            var prodcutReader = new RawSqlProductRepository(factory);
+
+            var result = await prodcutReader.GetPagedAsync(1, 2, keyword: "test");
 
             Assert.IsNotNull(result);
             Assert.IsGreaterThan(0, result.TotalCount);
