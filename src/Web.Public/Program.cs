@@ -1,6 +1,7 @@
 using System.Data.Common;
 using Web.Public.Components;
 using Web.Public.Repository;
+using Web.Public.Repository.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 

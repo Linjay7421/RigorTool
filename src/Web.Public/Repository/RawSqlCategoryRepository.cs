@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using Web.Public.Repository.Common;
 
 namespace Web.Public.Repository
 {

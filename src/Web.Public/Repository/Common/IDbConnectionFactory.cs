@@ -1,6 +1,6 @@
 ﻿using MySqlConnector;
 
-namespace Web.Public.Repository
+namespace Web.Public.Repository.Common
 {
     public interface IDbConnectionFactory
     {

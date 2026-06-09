@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System.Runtime.InteropServices;
 using Web.Public.Common;
+using Web.Public.Repository.Common;
 
 namespace Web.Public.Repository
 {
