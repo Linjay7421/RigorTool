@@ -64,7 +64,7 @@ namespace Web.Public.Repository
             return null;
         }
 
-        public async Task<PagedResult<Product>> GetPagedAsync(int pageNumber, int pageSize, string? categoryId = null, string? keyword = null)
+        public async Task<PagedResult<Product>> GetPagedAsync(int pageNumber, int pageSize, Guid? categoryId = null, string? keyword = null)
         {
             pageNumber = Math.Max(pageNumber, 1);
             pageSize = Math.Clamp(pageSize, 1, 100);
@@ -77,66 +77,34 @@ namespace Web.Public.Repository
 
             #region Assemble sql query
             var sql = @"
-                    SELECT p.Id, p.Name FROM Products p
-                ";
-
-            var countSql = @"
-                    SELECT COUNT(*) FROM Products p
-                ";
-
-            var conditions = new List<string>
-            {
-                "p.IsActive = 1"
-            };
-
-            // With Category Id.
-            if (!String.IsNullOrEmpty(categoryId)) {
-                sql += @"
+                    SELECT p.Id, p.Name
+                    FROM Products p
                     INNER JOIN ProductCategories pc
-                    ON p.Id = pc.ProdcutId
-                ";
+                        ON p.Id = pc.ProductId
+                    WHERE p.IsActive = 1
+                        AND (@CategoryId IS NULL OR pc.CategoryId = @CategoryId)
+                        AND (@Keyword IS NULL OR p.Name LIKE @Keyword OR p.Sku LIKE @Keyword)
+                    ORDER BY p.CreatedAt DESC
+                    LIMIT @PageSize OFFSET @Offset;
 
-                countSql += @"
+                    SELECT COUNT(*)
+                    FROM Products p
                     INNER JOIN ProductCategories pc
-                    ON p.Id = pc.ProdcutId
+                        ON p.Id = pc.ProductId
+                    WHERE p.IsActive = 1
+                        AND (@CategoryId IS NULL OR pc.CategoryId = @CategoryId)
+                        AND (@Keyword IS NULL OR p.Name LIKE @Keyword OR p.Sku LIKE @Keyword)
                 ";
-
-                conditions.Add(@"
-                    pc.CategoryId = @CategoryId
-                   ");
-            }
             
-            // With keyword.
-            if (keyword != null) {
-                conditions.Add(@"
-                    ( p.Name LIKE @Keyword OR p.Sku LIKE @Keyword )
-                   ");
-            }
-
-            // With Paged info.
-            var whereSql = "WHERE " + string.Join(" AND", conditions);
-            sql += whereSql + @"
-                ORDER BY p.CreatedAt DESC
-                LIMIT @PageSize OFFSET @Offset;
-            ";
-
-            countSql += whereSql + ";";
-            var finalSql = sql + countSql;
-
-            await using var command = new MySqlCommand(finalSql, connection);
+            await using var command = new MySqlCommand(sql, connection);
 
             command.Parameters.AddWithValue("@PageSize", pageSize);
             command.Parameters.AddWithValue("@Offset", offset);
+            command.Parameters.Add("@CategoryId", MySqlDbType.VarChar).Value =
+                categoryId.HasValue ? categoryId.Value.ToString() : DBNull.Value;
 
-            if (!string.IsNullOrWhiteSpace(categoryId))
-            {
-                command.Parameters.AddWithValue("@CategoryId", categoryId);
-            }
-
-            if (!string.IsNullOrWhiteSpace(keyword))
-            {
-                command.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
-            }
+            command.Parameters.Add("@Keyword", MySqlDbType.VarChar).Value =
+                string.IsNullOrWhiteSpace(keyword) ? DBNull.Value : $"%{keyword.Trim()}%";
             #endregion
 
             await using var reader = await command.ExecuteReaderAsync();
@@ -144,10 +112,11 @@ namespace Web.Public.Repository
             while (await reader.ReadAsync())
             {
                 products.Add(new Product
-                {
-                    Id = reader.GetGuid("Id"),
-                    Name = reader.GetString("Name")
-                });
+                    {
+                        Id = reader.GetGuid("Id"),
+                        Name = reader.GetString("Name")
+                    }
+                );
             }
 
             await reader.NextResultAsync();

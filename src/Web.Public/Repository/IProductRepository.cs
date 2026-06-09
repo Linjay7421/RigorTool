@@ -6,6 +6,6 @@ namespace Web.Public.Repository
     {
         Task<Product?> GetByIdAsync(Guid productId);
         Task<List<Product>> GetAllAsync();
-        Task<PagedResult<Product>> GetPagedAsync(int pageNumber, int pageSize, string? categoryId = null, string? keyword = null);
+        Task<PagedResult<Product>> GetPagedAsync(int pageNumber, int pageSize, Guid? categoryId = null, string? keyword = null);
     }
 }
