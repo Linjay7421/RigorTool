@@ -4,10 +4,8 @@ namespace Web.Public.Repository
 {
     public interface IProductRepository
     {
-        Task<List<Product>> GetAllProductsAsync();
-        Task<Product> GetProductByIdAsync(Guid id);
-        Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category);
-        Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm);
-        Task<PagedResult<Product>> GetProductsPagedAsync(int pageNumber, int pageSize);
+        Task<Product?> GetByIdAsync(Guid productId);
+        Task<List<Product>> GetAllAsync();
+        Task<PagedResult<Product>> GetPagedAsync(int pageNumber, int pageSize, string? categoryId = null, string? keyword = null);
     }
 }

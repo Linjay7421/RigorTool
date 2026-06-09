@@ -13,9 +13,9 @@ namespace Product.Infrastructure.Tests
         public async Task GetAllProducts_ShouldReturnAllProducts()
         {
             var factory = new MySqlConnectionFactory(TestConnectionString);
-            var repository = new RawSqlProductRepository(factory);
+            var prodcutReader = new RawSqlProductRepository(factory);
 
-            var products = await repository.GetAllProductsAsync();
+            var products = await prodcutReader.GetAllAsync();
 
             Assert.IsTrue(products.Any());
         }
@@ -23,12 +23,27 @@ namespace Product.Infrastructure.Tests
         [TestMethod]
         public async Task GetProductById_ShouldReturnProdcut() {
             var factory = new MySqlConnectionFactory(TestConnectionString);
-            var repository = new RawSqlProductRepository(factory);
+            var prodcutReader = new RawSqlProductRepository(factory);
 
-            var product = await repository.GetProductByIdAsync(TestProductId);
+            var product = await prodcutReader.GetByIdAsync(TestProductId);
 
             Assert.IsNotNull(product);
             Assert.AreEqual(product.Id, TestProductId);
+        }
+
+        [TestMethod]
+        public async Task GetProductsByCategory_ShouldReturnProducts() 
+        {
+            var factory = new MySqlConnectionFactory(TestConnectionString);
+            var prodcutReader = new RawSqlProductRepository(factory);
+            
+            var result = await prodcutReader.GetPagedAsync(1, 2);
+
+            Assert.IsNotNull(result);
+            Assert.IsGreaterThan(0, result.TotalCount);
+            Assert.AreEqual(1, result.PageNumber);
+            Assert.AreEqual(2, result.PageSize);
+            Assert.IsGreaterThanOrEqualTo(result.Items.Count, 1);
         }
     }
 }
