@@ -108,12 +108,12 @@ namespace Web.Public.Repository
             // With keyword.
             if (keyword != null) {
                 conditions.Add(@"
-                    ( p.Name LIKE @Keyword OR p.Sku LIKE @Keyword)
+                    ( p.Name LIKE @Keyword OR p.Sku LIKE @Keyword )
                    ");
             }
 
             // With Paged info.
-            var whereSql = "WHERE " + string.Join("AND", conditions);
+            var whereSql = "WHERE " + string.Join(" AND", conditions);
             sql += whereSql + @"
                 ORDER BY p.CreatedAt DESC
                 LIMIT @PageSize OFFSET @Offset;
