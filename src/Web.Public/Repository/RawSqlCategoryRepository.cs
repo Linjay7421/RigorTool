@@ -19,7 +19,7 @@ namespace Web.Public.Repository
 
             const string sql = @"
                 SELECT Id, ParentId, Name 
-                FROM ProductDB.Categories
+                FROM Categories
                 ORDER BY ParentId, Name;
             ";
 
