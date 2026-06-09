@@ -24,7 +24,7 @@ namespace Web.Public.Repository
 
             var sql = "SELECT * FROM Products";
 
-            await using var command = new MySqlCommand(sql, connection);
+            using var command = new MySqlCommand(sql, connection);
 
             await using var reader = await command.ExecuteReaderAsync();
 
@@ -47,7 +47,7 @@ namespace Web.Public.Repository
 
             const string sql = @"SELECT Id, Name FROM Products WHERE Id = @ProductId";
 
-            await using var command = new MySqlCommand(sql, connection);
+            using var command = new MySqlCommand(sql, connection);
             command.Parameters.AddWithValue("@ProductId", productId);
 
             await using var reader = await command.ExecuteReaderAsync();
@@ -96,7 +96,7 @@ namespace Web.Public.Repository
                         AND (@Keyword IS NULL OR p.Name LIKE @Keyword OR p.Sku LIKE @Keyword)
                 ";
             
-            await using var command = new MySqlCommand(sql, connection);
+            using var command = new MySqlCommand(sql, connection);
 
             command.Parameters.AddWithValue("@PageSize", pageSize);
             command.Parameters.AddWithValue("@Offset", offset);

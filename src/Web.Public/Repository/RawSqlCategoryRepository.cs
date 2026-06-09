@@ -23,7 +23,7 @@ namespace Web.Public.Repository
                 ORDER BY ParentId, Name;
             ";
 
-            await using var command = new MySqlCommand(sql, connection);
+            using var command = new MySqlCommand(sql, connection);
             await using var reader = await command.ExecuteReaderAsync();
 
             var categoriyList = new List<Category>();
@@ -67,7 +67,7 @@ namespace Web.Public.Repository
                 FROM CategoryTree;
             ";
 
-            await using var command = new MySqlCommand(sql, connection);
+            using var command = new MySqlCommand(sql, connection);
             command.Parameters.AddWithValue("@CategoryId", categoryId.ToString());
 
             await using var reader = await command.ExecuteReaderAsync();
