@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Web.Public.Components;
+using Web.Public.Features.Category;
 using Web.Public.Repository;
 using Web.Public.Repository.Common;
 
@@ -17,6 +18,11 @@ builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
         ?? throw new InvalidOperationException();
 
     return new MySqlConnectionFactory(connectionString);
+});
+
+
+builder.Services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssembly(typeof(GetCategoryTreeQueryHandler).Assembly);
 });
 
 var app = builder.Build();

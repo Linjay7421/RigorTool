@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="MySqlConnector" Version="2.6.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
+    <Folder Include="Features\Product\" />
   </ItemGroup>
 	
 </Project>
