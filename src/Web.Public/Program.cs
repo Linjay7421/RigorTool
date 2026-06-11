@@ -20,6 +20,7 @@ builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
     return new MySqlConnectionFactory(connectionString);
 });
 
+builder.Services.AddScoped<ICategoryRepository, RawSqlCategoryRepository>();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(GetCategoryTreeQueryHandler).Assembly);
