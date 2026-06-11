@@ -1,4 +1,4 @@
-﻿namespace Web.Public.Features.Category
+﻿namespace Web.Public.Features.Category.Models
 {
     public sealed class CategoryNode
     {

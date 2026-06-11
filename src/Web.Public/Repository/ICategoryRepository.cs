@@ -1,4 +1,6 @@
-﻿namespace Web.Public.Repository
+﻿using Web.Public.Features.Category.Models;
+
+namespace Web.Public.Repository
 {
     public interface ICategoryRepository
     {

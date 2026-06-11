@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Web.Public.Features.Category.Models;
 using Web.Public.Repository;
 
 namespace Web.Public.Features.Category

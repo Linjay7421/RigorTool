@@ -1,4 +1,4 @@
-﻿namespace Web.Public.Repository
+﻿namespace Web.Public.Features.Category.Models
 {
     public class Category
     {

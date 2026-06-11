@@ -38,7 +38,6 @@ namespace Product.Infrastructure.Tests
         {
             var factory = new MySqlConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
-            
             var result = await prodcutReader.GetPagedAsync(1, 2);
 
             Assert.IsNotNull(result);

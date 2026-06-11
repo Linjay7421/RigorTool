@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="src/Web.Public/Web.Public.csproj" />
-  <Project Path="test/Product.Infrastructure.Tests/Product.Infrastructure.Tests.csproj" />
+  <Project Path="test/Product.Infrastructure.Tests/Web.Public.Infrastructure.Tests.csproj" />
+  <Project Path="test/Web.Public.Application.Tests/Web.Public.Application.Tests.csproj" Id="759b5b0b-7c30-48ff-bdb6-a8a379a72a52" />
 </Solution>

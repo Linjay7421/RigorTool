@@ -1,7 +1,7 @@
 using Web.Public.Repository;
 using Web.Public.Repository.Common;
 
-namespace Product.Infrastructure.Tests
+namespace Cateogory.Infrastructure.Tests
 {
     [TestClass]
     public class MySqlCategoryRepositoryTests
@@ -31,6 +31,15 @@ namespace Product.Infrastructure.Tests
             var categories = await categoryReader.GetByIdAsync(categoryId);
 
             Assert.IsTrue(categories.Any());
+        }
+
+        [TestMethod]
+        public async Task Exists_ShouldReturnTrueForExistingCategory()
+        {
+            var factory = new MySqlConnectionFactory(testConnectionString);
+            var categoryReader = new RawSqlCategoryRepository(factory);
+            var exists = await categoryReader.ExistsAsync(categoryId);
+            Assert.IsTrue(exists);
         }
     }
 }

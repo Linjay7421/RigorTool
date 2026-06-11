@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System.Runtime.InteropServices;
 using Web.Public.Common;
+using Web.Public.Features.Product.Models;
 using Web.Public.Repository.Common;
 
 namespace Web.Public.Repository
@@ -14,15 +15,15 @@ namespace Web.Public.Repository
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<List<Product>> GetAllAsync()
+        public async Task<List<ProductSummary>> GetAllAsync()
         {
-            var products = new List<Product>();
+            var products = new List<ProductSummary>();
 
             await using var connection = _connectionFactory.CreateConnection();
 
             await connection.OpenAsync();
 
-            var sql = "SELECT * FROM Products";
+            var sql = "SELECT Id, Name, Sku, Price, ShortDescription FROM Products";
 
             using var command = new MySqlCommand(sql, connection);
 
@@ -30,22 +31,25 @@ namespace Web.Public.Repository
 
             while (await reader.ReadAsync())
             {
-                products.Add(new Product
+                products.Add(new ProductSummary
                 {
                     Id = reader.GetGuid("Id"),
-                    Name = reader.GetString("Name")
+                    Name = reader.GetString("Name"),
+                    Sku = reader.GetString("Sku"),
+                    Price = reader.GetDecimal("Price"),
+                    ShortDescription = reader.GetString("ShortDescription")
                 });
             }
 
             return products;
         }
 
-        public async Task<Product?> GetByIdAsync(Guid productId)
+        public async Task<ProductSummary?> GetByIdAsync(Guid productId)
         {
             await using var connection = _connectionFactory.CreateConnection();
             await connection.OpenAsync();
 
-            const string sql = @"SELECT Id, Name FROM Products WHERE Id = @ProductId";
+            const string sql = @"SELECT Id, Name, Sku, Price, ShortDescription FROM Products WHERE Id = @ProductId";
 
             using var command = new MySqlCommand(sql, connection);
             command.Parameters.AddWithValue("@ProductId", productId);
@@ -54,30 +58,33 @@ namespace Web.Public.Repository
 
             if (await reader.ReadAsync())
             {
-                return new Product
+                return new ProductSummary
                 {
                     Id = reader.GetGuid("Id"),
-                    Name = reader.GetString("Name")
+                    Name = reader.GetString("Name"),
+                    Sku = reader.GetString("Sku"),
+                    Price = reader.GetDecimal("Price"),
+                    ShortDescription = reader.GetString("ShortDescription")
                 };
             }
 
             return null;
         }
 
-        public async Task<PagedResult<Product>> GetPagedAsync(int pageNumber, int pageSize, Guid? categoryId = null, string? keyword = null)
+        public async Task<PagedResult<ProductSummary>> GetPagedAsync(int pageNumber, int pageSize, Guid? categoryId = null, string? keyword = null)
         {
             pageNumber = Math.Max(pageNumber, 1);
             pageSize = Math.Clamp(pageSize, 1, 100);
 
             var offset = pageSize * (pageNumber - 1);
-            var products = new List<Product>();
+            var products = new List<ProductSummary>();
 
             await using var connection = _connectionFactory.CreateConnection();
             await connection.OpenAsync();
 
             #region Assemble sql query
             var sql = @"
-                    SELECT p.Id, p.Name
+                    SELECT p.Id, p.Name, p.Sku, p.Price, p.ShortDescription
                     FROM Products p
                     INNER JOIN ProductCategories pc
                         ON p.Id = pc.ProductId
@@ -111,10 +118,13 @@ namespace Web.Public.Repository
 
             while (await reader.ReadAsync())
             {
-                products.Add(new Product
+                products.Add(new ProductSummary
                     {
                         Id = reader.GetGuid("Id"),
-                        Name = reader.GetString("Name")
+                        Name = reader.GetString("Name"),
+                        Sku = reader.GetString("Sku"),
+                        Price = reader.GetDecimal("Price"),
+                        ShortDescription = reader.GetString("ShortDescription")
                     }
                 );
             }
@@ -128,7 +138,7 @@ namespace Web.Public.Repository
                 totalCount = reader.GetInt32(0);
             }
 
-            return new PagedResult<Product>
+            return new PagedResult<ProductSummary>
             {
                 Items = products,
                 TotalCount = totalCount,
