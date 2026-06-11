@@ -13,6 +13,22 @@ namespace Web.Public.Repository
             _connectionFactory = connectionFactory;
         }
 
+        public async Task<bool> ExistsAsync(Guid id)
+        {
+            await using var connection = _connectionFactory.CreateConnection();
+                        await connection.OpenAsync();
+
+            const string sql = @"
+                SELECT EXISTS(SELECT 1 FROM ProductDB.Categories WHERE Id = @CategoryId) AS 'Exists';
+            ";
+
+            using var command = new MySqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@CategoryId", id.ToString());
+
+            var result = await command.ExecuteScalarAsync();
+            return Convert.ToBoolean(result);
+        }
+
         public async Task<IReadOnlyList<Category>> GetAllAsync()
         {
             await using var connection = _connectionFactory.CreateConnection();
@@ -36,7 +52,7 @@ namespace Web.Public.Repository
                     {
                         Id = reader.GetGuid("Id"),
                         ParentId = reader.IsDBNull(ordinal) ? null : reader.GetGuid("ParentId"),
-                    Name = reader.GetString("Name"),
+                        Name = reader.GetString("Name"),
                     }
                 );
             }

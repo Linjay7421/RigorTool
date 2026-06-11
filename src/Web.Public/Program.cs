@@ -1,6 +1,6 @@
-using System.Data.Common;
 using Web.Public.Components;
 using Web.Public.Features.Category;
+using Web.Public.Features.Product;
 using Web.Public.Repository;
 using Web.Public.Repository.Common;
 
@@ -21,9 +21,11 @@ builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
 });
 
 builder.Services.AddScoped<ICategoryRepository, RawSqlCategoryRepository>();
+builder.Services.AddScoped<IProductRepository, RawSqlProductRepository>();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(GetCategoryTreeQueryHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetPagedSummaryQueryHandler).Assembly);
 });
 
 var app = builder.Build();

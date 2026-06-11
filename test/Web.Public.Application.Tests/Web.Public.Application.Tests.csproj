@@ -16,8 +16,4 @@
     <ProjectReference Include="..\..\src\Web.Public\Web.Public.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Category\" />
-  </ItemGroup>
-
 </Project>

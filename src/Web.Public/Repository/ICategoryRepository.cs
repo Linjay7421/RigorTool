@@ -6,5 +6,6 @@ namespace Web.Public.Repository
     {
         Task<IReadOnlyList<Category>> GetAllAsync();
         Task<IReadOnlyList<Category>> GetByIdAsync(Guid id);
+        Task<bool> ExistsAsync(Guid id);
     }
 }
