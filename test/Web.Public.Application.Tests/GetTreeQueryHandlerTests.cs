@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
+using Web.Public.Common.Behaviors;
 using Web.Public.Features.Category;
 using Web.Public.Features.Category.Models;
 using Web.Public.Repository;
@@ -25,7 +27,14 @@ namespace Web.Public.Application.Tests
 
             services.AddMediatR(cfg =>
             {
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
                 cfg.RegisterServicesFromAssemblyContaining<GetCategoryTreeQuery>();
+            });
+
+            services.AddLogging(builder =>
+            {
+                builder.AddDebug();
+                builder.SetMinimumLevel(LogLevel.Information);
             });
 
             _provider = services.BuildServiceProvider();

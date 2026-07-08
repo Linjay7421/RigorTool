@@ -1,3 +1,5 @@
+using MediatR;
+using Web.Public.Common.Behaviors;
 using Web.Public.Components;
 using Web.Public.Features.Category;
 using Web.Public.Features.Product;
@@ -24,6 +26,7 @@ builder.Services.AddScoped<ICategoryRepository, RawSqlCategoryRepository>();
 builder.Services.AddScoped<IProductRepository, RawSqlProductRepository>();
 
 builder.Services.AddMediatR(cfg => {
+    cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
     cfg.RegisterServicesFromAssembly(typeof(GetCategoryTreeQueryHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(GetPagedSummaryQueryHandler).Assembly);
 });
