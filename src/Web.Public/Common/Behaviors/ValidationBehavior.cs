@@ -1,0 +1,35 @@
+﻿using FluentValidation;
+using MediatR;
+
+namespace Web.Public.Common.Behaviors
+{
+    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    {
+        // When 1 vs 1 handler to validator. or you should use Enumerable.
+        private readonly IValidator<TRequest> _validator;
+        public ValidationBehavior(IValidator<TRequest>? validator = null)
+        {
+            _validator = validator;
+        }
+
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        {
+            // Check if handler has a validator.
+            if (_validator is null)
+            {
+                return await next();
+            }
+
+            // Validate the request using the validator.
+            var context = new ValidationContext<TRequest>(request);
+            var result = await _validator.ValidateAsync(context, cancellationToken);
+
+            if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors.ToList());
+            }
+
+            return await next();
+        }
+    }
+}

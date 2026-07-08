@@ -29,7 +29,7 @@ namespace Web.Public.Common.Behaviors
             catch (Exception ex)
             {
                 exception = ex;
-                throw;
+                throw; // go to finally.
             }
             finally
             {

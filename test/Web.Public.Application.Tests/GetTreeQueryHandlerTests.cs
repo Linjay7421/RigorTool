@@ -1,10 +1,12 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Web.Public.Common.Behaviors;
 using Web.Public.Features.Category;
 using Web.Public.Features.Category.Models;
+using Web.Public.Features.Product;
 using Web.Public.Repository;
 using Web.Public.Repository.Common;
 
@@ -22,12 +24,13 @@ namespace Web.Public.Application.Tests
 
             services.AddSingleton<IDbConnectionFactory>(
                 new MySqlConnectionFactory("Server=localhost;Port=13306;Database=ProductDB;Uid=root;Pwd=MyStrongPass123!;"));
-
+            services.AddScoped<IValidator<GetCategoryTreeQuery>, GetCategoryTreeQueryValidator>();
             services.AddScoped<ICategoryRepository, RawSqlCategoryRepository>();
 
             services.AddMediatR(cfg =>
             {
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
                 cfg.RegisterServicesFromAssemblyContaining<GetCategoryTreeQuery>();
             });
 

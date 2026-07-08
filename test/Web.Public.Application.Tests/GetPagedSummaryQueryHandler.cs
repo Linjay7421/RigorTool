@@ -1,8 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Web.Public.Common;
+using Web.Public.Common.Behaviors;
 using Web.Public.Features.Category.Models;
 using Web.Public.Features.Product;
 using Web.Public.Features.Product.Models;
@@ -29,11 +31,34 @@ public class GetPagedSummaryQueryHandlerTests
 
         services.AddMediatR(cfg =>
         {
+            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             cfg.RegisterServicesFromAssemblyContaining<GetPagedSummaryQuery>();
+        });
+
+        services.AddLogging(builder =>
+        {
+            builder.AddDebug();
+            builder.SetMinimumLevel(LogLevel.Information);
         });
 
         _provider = services.BuildServiceProvider();
     }
+
+    [TestMethod]
+    public async Task ShouldReturnPagedSummary_IntegrationTest()
+    {
+        using var scope = _provider.CreateScope();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        var categoryId = Guid.Parse("10000000-0000-0000-0000-000000000002");
+        var result = await mediator.Send(
+            new GetPagedSummaryQuery(1, 10, categoryId, null),
+            CancellationToken.None);
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.Items.Any());
+    } // Integration test.
+
 
     [TestMethod]
     public async Task Handler_ShouldReturnPagedSummary()

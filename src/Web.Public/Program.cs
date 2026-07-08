@@ -1,4 +1,6 @@
+using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Web.Public.Common.Behaviors;
 using Web.Public.Components;
 using Web.Public.Features.Category;
@@ -25,8 +27,14 @@ builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
 builder.Services.AddScoped<ICategoryRepository, RawSqlCategoryRepository>();
 builder.Services.AddScoped<IProductRepository, RawSqlProductRepository>();
 
+// Flunent Validator
+builder.Services.AddScoped<IValidator<GetPagedSummaryQuery>, GetPagedSummaryQueryValidator>();
+builder.Services.AddScoped<IValidator<GetCategoryTreeQuery>, GetCategoryTreeQueryValidator>();
+
+// MediatR
 builder.Services.AddMediatR(cfg => {
     cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
     cfg.RegisterServicesFromAssembly(typeof(GetCategoryTreeQueryHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(GetPagedSummaryQueryHandler).Assembly);
 });
