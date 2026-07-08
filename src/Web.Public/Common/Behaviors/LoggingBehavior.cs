@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System.Diagnostics;
 
 namespace Web.Public.Common.Behaviors
 {
@@ -15,16 +16,45 @@ namespace Web.Public.Common.Behaviors
             RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
-            // Log the request being handled.
-            _logger.LogInformation($"Processing request of type {typeof(TRequest).Name}");
-            Console.WriteLine($"Processing request of type {typeof(TRequest).Name}");
-            // Pass control to next handler or behavior in the pipeline.
-            var reponse = await next();
+            var requestId = Guid.CreateVersion7().ToString();
+            var requestName = typeof(TRequest).Name;
 
-            // Log the response after processing.
-            _logger.LogInformation($"Completed handling request, response type: {typeof(TResponse).Name}");
-            Console.WriteLine($"Completed handling request, response type: {typeof(TResponse).Name}");
-            return reponse;
+            var stopwatch = Stopwatch.StartNew();
+            Exception? exception = null;
+
+            try
+            {
+                return await next();
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+                throw;
+            }
+            finally
+            {
+                stopwatch.Stop();
+
+                if (exception is null)
+                {
+                    _logger.LogInformation(
+                        "MediatR request completed. RequestName={RequestName}, RequestId={RequestId}, Status={Status}, ElapsedMs={ElapsedMs}",
+                        requestName,
+                        requestId,
+                        "Success",
+                        stopwatch.ElapsedMilliseconds);
+                }
+                else
+                {
+                    _logger.LogError(
+                        exception,
+                        "MediatR request completed. RequestName={RequestName}, RequestId={RequestId}, Status={Status}, ElapsedMs={ElapsedMs}",
+                        requestName,
+                        requestId,
+                        "Failed",
+                        stopwatch.ElapsedMilliseconds);
+                }
+            }
         }
     }
 }
