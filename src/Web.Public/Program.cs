@@ -1,10 +1,13 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Web.Public.Common.Abstraction;
 using Web.Public.Common.Behaviors;
 using Web.Public.Components;
 using Web.Public.Features.Category;
 using Web.Public.Features.Product;
+using Web.Public.Features.Uploader;
+using Web.Public.Providers;
 using Web.Public.Repository;
 using Web.Public.Repository.Common;
 using Web.Public.Storage;

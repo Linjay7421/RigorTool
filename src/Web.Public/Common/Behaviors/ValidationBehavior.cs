@@ -7,9 +7,12 @@ namespace Web.Public.Common.Behaviors
     {
         // When 1 vs 1 handler to validator. or you should use Enumerable.
         private readonly IValidator<TRequest> _validator;
-        public ValidationBehavior(IValidator<TRequest>? validator = null)
+        private readonly ILogger<ValidationBehavior<TRequest, TResponse>> _logger;
+
+        public ValidationBehavior(ILogger<ValidationBehavior<TRequest, TResponse>> logger, IValidator<TRequest>? validator = null)
         {
             _validator = validator;
+            _logger = logger;
         }
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
@@ -26,9 +29,12 @@ namespace Web.Public.Common.Behaviors
 
             if (!result.IsValid)
             {
+                _logger.LogInformation("Request/Command invalid.");
                 throw new ValidationException(result.Errors.ToList());
             }
 
+            _logger.LogInformation("Request/Command valid.");
+            
             return await next();
         }
     }
