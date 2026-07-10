@@ -1,10 +1,10 @@
 ﻿using Web.Public.Repository;
 using Web.Public.Repository.Common;
 
-namespace Product.Infrastructure.Tests
+namespace Repository.Tests
 {
     [TestClass]
-    public sealed class MySqlProductRepositoryTests
+    public sealed class RawProductRepositoryTests
     {
         private const string TestConnectionString =
         "Server=localhost;Port=13306;Database=ProductDB;Uid=root;Pwd=MyStrongPass123!;";
@@ -14,7 +14,7 @@ namespace Product.Infrastructure.Tests
         [TestMethod]
         public async Task GetAll_ShouldReturnAllProducts()
         {
-            var factory = new MySqlConnectionFactory(TestConnectionString);
+            var factory = new ProductDbConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
 
             var products = await prodcutReader.GetAllAsync();
@@ -24,7 +24,7 @@ namespace Product.Infrastructure.Tests
 
         [TestMethod]
         public async Task GetById_ShouldReturnProdcut() {
-            var factory = new MySqlConnectionFactory(TestConnectionString);
+            var factory = new ProductDbConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
 
             var product = await prodcutReader.GetByIdAsync(TestProductId);
@@ -36,7 +36,7 @@ namespace Product.Infrastructure.Tests
         [TestMethod]
         public async Task GetPaged_ShouldReturnPagedDto() 
         {
-            var factory = new MySqlConnectionFactory(TestConnectionString);
+            var factory = new ProductDbConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
             var result = await prodcutReader.GetPagedAsync(1, 2);
 
@@ -50,7 +50,7 @@ namespace Product.Infrastructure.Tests
         [TestMethod]
         public async Task GetPagedByCategory_ShouldReturnPagedDto()
         {
-            var factory = new MySqlConnectionFactory(TestConnectionString);
+            var factory = new ProductDbConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
 
             var result = await prodcutReader.GetPagedAsync(1, 2, categoryId);
@@ -65,7 +65,7 @@ namespace Product.Infrastructure.Tests
         [TestMethod]
         public async Task GetPagedByKeyword_ShouldReturnPagedDto()
         {
-            var factory = new MySqlConnectionFactory(TestConnectionString);
+            var factory = new ProductDbConnectionFactory(TestConnectionString);
             var prodcutReader = new RawSqlProductRepository(factory);
 
             var result = await prodcutReader.GetPagedAsync(1, 2, keyword: "test");

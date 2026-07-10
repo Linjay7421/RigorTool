@@ -2,7 +2,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Web.Public.Storage;
 
-namespace Infrastructure.Storage.Tests
+namespace Storage.Tests
 {
     [TestClass]
     public sealed class LocalFileStorageTests

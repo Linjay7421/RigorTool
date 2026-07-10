@@ -1,10 +1,10 @@
 using Web.Public.Repository;
 using Web.Public.Repository.Common;
 
-namespace Cateogory.Infrastructure.Tests
+namespace Repository.Tests
 {
     [TestClass]
-    public class MySqlCategoryRepositoryTests
+    public class RawCategoryRepositoryTests
     {
         private const string testConnectionString =
             "Server=localhost;Port=13306;Database=ProductDB;Uid=root;Pwd=MyStrongPass123!;";
@@ -14,7 +14,7 @@ namespace Cateogory.Infrastructure.Tests
         [TestMethod]
         public async Task GetAll_ShouldReturnAllCategories()
         {
-            var factory = new MySqlConnectionFactory(testConnectionString);
+            var factory = new ProductDbConnectionFactory(testConnectionString);
             var categoryReader = new RawSqlCategoryRepository(factory);
 
             var categories = await categoryReader.GetAllAsync();
@@ -25,7 +25,7 @@ namespace Cateogory.Infrastructure.Tests
         [TestMethod]
         public async Task GetById_ShouldReturnCategoryChildren()
         {
-            var factory = new MySqlConnectionFactory(testConnectionString);
+            var factory = new ProductDbConnectionFactory(testConnectionString);
             var categoryReader = new RawSqlCategoryRepository(factory);
 
             var categories = await categoryReader.GetByIdAsync(categoryId);
@@ -36,7 +36,7 @@ namespace Cateogory.Infrastructure.Tests
         [TestMethod]
         public async Task Exists_ShouldReturnTrueForExistingCategory()
         {
-            var factory = new MySqlConnectionFactory(testConnectionString);
+            var factory = new ProductDbConnectionFactory(testConnectionString);
             var categoryReader = new RawSqlCategoryRepository(factory);
             var exists = await categoryReader.ExistsAsync(categoryId);
             Assert.IsTrue(exists);
