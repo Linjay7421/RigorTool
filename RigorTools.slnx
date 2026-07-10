@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="src/Web.Public/Web.Public.csproj" />
+  <Project Path="test/Library.Application.IntegrationTests/Library.Application.IntegrationTests.csproj" Id="8a812f23-9168-4732-a6a6-e522d8beba43" />
   <Project Path="test/Product.Infrastructure.Tests/Web.Public.Infrastructure.Tests.csproj" />
   <Project Path="test/Web.Public.Application.Tests/Web.Public.Application.Tests.csproj" Id="759b5b0b-7c30-48ff-bdb6-a8a379a72a52" />
 </Solution>
