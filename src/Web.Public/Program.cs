@@ -34,6 +34,9 @@ builder.Services.AddSingleton<IStorageDbConnectionFactory>(_ =>
     return new StorageDbConnectionFactory(connectionString);
 }); // File database.
 
+builder.Services.AddSingleton<IClock, SystemClock>();
+builder.Services.AddSingleton<IObjectKeyGenerator, DefaultObjectKeyGenerator>();
+
 builder.Services.Configure<FileStorageOptions>(
     builder.Configuration.GetSection("FileStorage"));
 
@@ -50,6 +53,8 @@ builder.Services.AddMediatR(cfg => {
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
     cfg.RegisterServicesFromAssembly(typeof(GetCategoryTreeQueryHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(GetPagedSummaryQueryHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(UploadImageHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(UploadDocumentHandler).Assembly);
 });
 
 var app = builder.Build();
