@@ -6,9 +6,9 @@ namespace Web.Public.Repository
 {
     public class RawSqlCategoryRepository : ICategoryRepository
     {
-        private readonly IDbConnectionFactory _connectionFactory;
+        private readonly IProductDbConnectionFactory _connectionFactory;
 
-        public RawSqlCategoryRepository(IDbConnectionFactory connectionFactory)
+        public RawSqlCategoryRepository(IProductDbConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }

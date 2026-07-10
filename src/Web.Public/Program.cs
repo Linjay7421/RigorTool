@@ -7,6 +7,7 @@ using Web.Public.Features.Category;
 using Web.Public.Features.Product;
 using Web.Public.Repository;
 using Web.Public.Repository.Common;
+using Web.Public.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,14 +16,26 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 // Repository dependcy injection.
-builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
+builder.Services.AddSingleton<IProductDbConnectionFactory>(_ =>
 {
     var connectionString =
         builder.Configuration.GetConnectionString("Default")
-        ?? throw new InvalidOperationException();
+        ?? throw new InvalidOperationException("Missing Default connection string.");
 
-    return new MySqlConnectionFactory(connectionString);
-});
+    return new ProductDbConnectionFactory(connectionString);
+}); // Product database.
+
+builder.Services.AddSingleton<IStorageDbConnectionFactory>(_ =>
+{
+    var connectionString =
+        builder.Configuration.GetConnectionString("Storage")
+        ?? throw new InvalidOperationException("Missing Storage connection string.");
+
+    return new StorageDbConnectionFactory(connectionString);
+}); // File database.
+
+builder.Services.Configure<FileStorageOptions>(
+    builder.Configuration.GetSection("FileStorage"));
 
 builder.Services.AddScoped<ICategoryRepository, RawSqlCategoryRepository>();
 builder.Services.AddScoped<IProductRepository, RawSqlProductRepository>();

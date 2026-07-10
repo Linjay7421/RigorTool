@@ -8,9 +8,9 @@ namespace Web.Public.Repository
 {
     public class RawSqlProductRepository : IProductRepository
     {
-        private readonly IDbConnectionFactory _connectionFactory;
+        private readonly IProductDbConnectionFactory _connectionFactory;
 
-        public RawSqlProductRepository(IDbConnectionFactory connectionFactory)
+        public RawSqlProductRepository(IProductDbConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }
