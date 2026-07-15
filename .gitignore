@@ -365,5 +365,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# MySQL Database
-src/Db.Product/*
+# Temporary
+src/Db.*/*
+.codex
