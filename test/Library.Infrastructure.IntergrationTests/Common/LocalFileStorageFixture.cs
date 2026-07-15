@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Web.Public.Storage;
+using Web.Library.Infrastructure.Storage;
 
 namespace Library.Infrastructure.IntergrationTests.Common
 {

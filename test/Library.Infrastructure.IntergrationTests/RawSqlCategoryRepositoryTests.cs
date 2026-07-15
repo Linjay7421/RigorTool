@@ -1,11 +1,10 @@
 using Library.Infrastructure.IntergrationTests.Common;
-using Web.Public.Repository;
-using Web.Public.Repository.Common;
+using Web.Library.Infrastructure.Persistence;
 
-namespace Repository.Tests
+namespace Persistence.Repository.Tests
 {
     [TestClass]
-    public class RawCategoryRepositoryTests
+    public class RawSqlCategoryRepositoryTests
     {
         private ProductDatabaseFixture _databaseFixture = default!;
         private readonly Guid categoryId = Guid.Parse("10000000-0000-0000-0000-000000000001");

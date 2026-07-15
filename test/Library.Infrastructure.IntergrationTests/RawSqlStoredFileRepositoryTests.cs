@@ -1,11 +1,9 @@
 using Library.Infrastructure.IntergrationTests.Common;
-using Microsoft.AspNetCore.Connections;
 using MySqlConnector;
-using Web.Public.Domains;
-using Web.Public.Repository;
-using Web.Public.Repository.Common;
+using Web.Library.Domain;
+using Web.Library.Infrastructure.Persistence;
 
-namespace Repository.Tests
+namespace Persistence.Repository.Tests
 {
     [TestClass]
     public sealed class RawSqlStoredFileRepositoryTests
@@ -81,11 +79,11 @@ namespace Repository.Tests
             Assert.IsNull(result);
         }
 
-        private static Web.Public.Domains.StoredFile CreateStoredFile()
+        private static StoredFile CreateStoredFile()
         {
             var id = Guid.NewGuid();
 
-            return Web.Public.Domains.StoredFile.Create(
+            return StoredFile.Create(
                 id: id,
                 originalName: "test-file.txt",
                 category: StoredFileCategory.Document,
@@ -97,7 +95,7 @@ namespace Repository.Tests
                 createdAt: new DateTimeOffset(2026, 7, 9, 0, 0, 0, TimeSpan.Zero));
         }
 
-        private async Task<Web.Public.Domains.StoredFile?> GetStoredFileByIdAsync(Guid id)
+        private async Task<StoredFile?> GetStoredFileByIdAsync(Guid id)
         {
             await using var connection = _databaseFixture.ConnectionFactory.CreateConnection();
             await connection.OpenAsync();
@@ -121,7 +119,7 @@ namespace Repository.Tests
             return ReadStoredFile(reader);
         }
 
-        private async Task InsertStoredFileAsync(Web.Public.Domains.StoredFile storedFile)
+        private async Task InsertStoredFileAsync(StoredFile storedFile)
         {
             await using var connection = _databaseFixture.ConnectionFactory.CreateConnection();
             await connection.OpenAsync();
@@ -147,8 +145,8 @@ namespace Repository.Tests
             await command.ExecuteNonQueryAsync();
         }
 
-        private static Web.Public.Domains.StoredFile ReadStoredFile(MySqlDataReader reader)
-            => Web.Public.Domains.StoredFile.Create(
+        private static StoredFile ReadStoredFile(MySqlDataReader reader)
+            => StoredFile.Create(
                 id: reader.GetGuid("Id"),
                 originalName: reader.GetString("OriginalName"),
                 category: (StoredFileCategory)reader.GetByte("Category"),
@@ -160,8 +158,8 @@ namespace Repository.Tests
                 createdAt: new DateTimeOffset(reader.GetDateTime("CreatedAt"), TimeSpan.Zero));
 
         private static void AssertStoredFile(
-            Web.Public.Domains.StoredFile expected,
-            Web.Public.Domains.StoredFile? actual)
+            StoredFile expected,
+            StoredFile? actual)
         {
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected.Id, actual.Id);

@@ -1,7 +1,7 @@
 using Library.Infrastructure.IntergrationTests.Common;
 using Microsoft.Extensions.Options;
 using System.Text;
-using Web.Public.Storage;
+using Web.Library.Infrastructure.Storage;
 
 namespace Storage.Tests
 {

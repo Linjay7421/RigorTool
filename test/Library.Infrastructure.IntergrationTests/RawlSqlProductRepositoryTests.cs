@@ -1,11 +1,10 @@
 ﻿using Library.Infrastructure.IntergrationTests.Common;
-using Web.Public.Repository;
-using Web.Public.Repository.Common;
+using Web.Library.Infrastructure.Persistence;
 
-namespace Repository.Tests
+namespace Persistence.Repository.Tests
 {
     [TestClass]
-    public sealed class RawProductRepositoryTests
+    public sealed class RawSqlProductRepositoryTests
     {
 
         private ProductDatabaseFixture _databaseFixture = default!;
@@ -19,6 +18,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetAll_ShouldReturnAllProducts()
         {
             var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
@@ -29,6 +29,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetById_ShouldReturnProdcut() {
             var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
 
@@ -39,6 +40,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetPaged_ShouldReturnPagedDto() 
         {
             var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
@@ -52,6 +54,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetPagedByCategory_ShouldReturnPagedDto()
         {
             var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
@@ -66,6 +69,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetPagedByKeyword_ShouldReturnPagedDto()
         {
             var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
