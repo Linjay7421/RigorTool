@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
 
-namespace Web.Public.Features.Product
+namespace Web.Library.Application.Features.Product
 {
     public class GetPagedSummaryQueryValidator : AbstractValidator<GetPagedSummaryQuery>
     {

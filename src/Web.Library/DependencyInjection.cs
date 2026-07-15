@@ -5,23 +5,25 @@ using Web.Infrastructure.Providers;
 using Web.Library.Application.Abstractions;
 using Web.Library.Application.Behaviors;
 using Web.Library.Application.Features.Category;
+using Web.Library.Application.Features.Product;
 using Web.Library.Application.Features.Uploader;
 using Web.Library.Infrastructure.Persistence;
 using Web.Library.Infrastructure.Repository.Common;
 using Web.Library.Infrastructure.Storage;
-using Web.Public.Features.Product;
 
 namespace Web.Library
 {
     public static class DependencyInjection
     {
         public static IServiceCollection AddApplication(
-        this IServiceCollection services)
+            this IServiceCollection services)
         {
             // Flunent Validator
             services.AddScoped<IValidator<GetPagedSummaryQuery>, GetPagedSummaryQueryValidator>();
             services.AddScoped<IValidator<GetCategoryTreeQuery>, GetCategoryTreeQueryValidator>();
-            
+            services.AddScoped<IValidator<UploadDocumentCommand>, UploadDocumentCommandValidator>();
+            services.AddScoped<IValidator<UploadImageCommand>, UploadImageCommandValidator>();
+
             // MediatR
             services.AddMediatR(cfg =>
             {
@@ -42,6 +44,9 @@ namespace Web.Library
         {
             services.AddScoped<IProductRepository, RawSqlProductRepository>();
             services.AddScoped<ICategoryRepository, RawSqlCategoryRepository>();
+            services.AddScoped<IStoredFileRepository, RawSqlStoredFileRepository>();
+            services.AddScoped<IFileStorage, LocalFileStorage>();
+
             services.AddSingleton<IClock, SystemClock>();
             services.AddSingleton<IObjectKeyGenerator, DefaultObjectKeyGenerator>();
 

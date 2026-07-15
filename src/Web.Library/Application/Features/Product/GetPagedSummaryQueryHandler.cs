@@ -3,7 +3,7 @@ using Web.Library.Application.Abstractions;
 using Web.Library.Application.Features.Product;
 using Web.Library.Common;
 
-namespace Web.Public.Features.Product
+namespace Web.Library.Application.Features.Product
 {
     public class GetPagedSummaryQueryHandler : IRequestHandler<GetPagedSummaryQuery, PagedResult<ProductSummary>>
     {
