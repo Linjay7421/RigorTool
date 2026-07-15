@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Web.Library\Web.Library.csproj" />
+    <ProjectReference Include="..\..\src\Web.Library\Web.Library.csproj" />
     <ProjectReference Include="..\Library.Application.UnitTests\Library.Application.UnitTests.csproj" />
     <ProjectReference Include="..\Library.Infrastructure.IntergrationTests\Library.Infrastructure.IntergrationTests.csproj" />
   </ItemGroup>
