@@ -1,17 +1,17 @@
 ﻿using FluentValidation;
-using Library.Application.IntegrationTests.Common;
+using Library.Infrastructure.IntergrationTests.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Web.Public.Common.Abstraction;
-using Web.Public.Common.Behaviors;
-using Web.Public.Features.Uploader;
-using Web.Public.Providers;
-using Web.Public.Repository;
-using Web.Public.Repository.Common;
-using Web.Public.Storage;
+using Web.Infrastructure.Providers;
+using Web.Library.Application.Abstractions;
+using Web.Library.Application.Behaviors;
+using Web.Library.Application.Features.Uploader;
+using Web.Library.Infrastructure.Persistence;
+using Web.Library.Infrastructure.Repository.Common;
+using Web.Library.Infrastructure.Storage;
 namespace Handlers.tests
 {
     [TestClass]
