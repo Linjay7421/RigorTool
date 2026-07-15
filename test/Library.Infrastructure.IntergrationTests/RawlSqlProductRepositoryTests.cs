@@ -1,4 +1,5 @@
-﻿using Web.Public.Repository;
+﻿using Library.Infrastructure.IntergrationTests.Common;
+using Web.Public.Repository;
 using Web.Public.Repository.Common;
 
 namespace Repository.Tests
@@ -6,16 +7,21 @@ namespace Repository.Tests
     [TestClass]
     public sealed class RawProductRepositoryTests
     {
-        private const string TestConnectionString =
-        "Server=localhost;Port=13306;Database=ProductDB;Uid=root;Pwd=MyStrongPass123!;";
+
+        private ProductDatabaseFixture _databaseFixture = default!;
         private Guid TestProductId = Guid.Parse("11111111-1111-1111-1111-111111111111");
         private readonly Guid categoryId = Guid.Parse("10000000-0000-0000-0000-000000000002");
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _databaseFixture = new ProductDatabaseFixture();
+        }
 
         [TestMethod]
         public async Task GetAll_ShouldReturnAllProducts()
         {
-            var factory = new ProductDbConnectionFactory(TestConnectionString);
-            var prodcutReader = new RawSqlProductRepository(factory);
+            var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
 
             var products = await prodcutReader.GetAllAsync();
 
@@ -24,8 +30,7 @@ namespace Repository.Tests
 
         [TestMethod]
         public async Task GetById_ShouldReturnProdcut() {
-            var factory = new ProductDbConnectionFactory(TestConnectionString);
-            var prodcutReader = new RawSqlProductRepository(factory);
+            var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
 
             var product = await prodcutReader.GetByIdAsync(TestProductId);
 
@@ -36,8 +41,7 @@ namespace Repository.Tests
         [TestMethod]
         public async Task GetPaged_ShouldReturnPagedDto() 
         {
-            var factory = new ProductDbConnectionFactory(TestConnectionString);
-            var prodcutReader = new RawSqlProductRepository(factory);
+            var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
             var result = await prodcutReader.GetPagedAsync(1, 2);
 
             Assert.IsNotNull(result);
@@ -50,8 +54,7 @@ namespace Repository.Tests
         [TestMethod]
         public async Task GetPagedByCategory_ShouldReturnPagedDto()
         {
-            var factory = new ProductDbConnectionFactory(TestConnectionString);
-            var prodcutReader = new RawSqlProductRepository(factory);
+            var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
 
             var result = await prodcutReader.GetPagedAsync(1, 2, categoryId);
 
@@ -65,8 +68,7 @@ namespace Repository.Tests
         [TestMethod]
         public async Task GetPagedByKeyword_ShouldReturnPagedDto()
         {
-            var factory = new ProductDbConnectionFactory(TestConnectionString);
-            var prodcutReader = new RawSqlProductRepository(factory);
+            var prodcutReader = new RawSqlProductRepository(_databaseFixture.ConnectionFactory);
 
             var result = await prodcutReader.GetPagedAsync(1, 2, keyword: "test");
 

@@ -25,7 +25,7 @@ builder.Services.AddSingleton<IProductDbConnectionFactory>(_ =>
         builder.Configuration.GetConnectionString("Default")
         ?? throw new InvalidOperationException("Missing Default connection string.");
 
-    return new ProductDbConnectionFactory(connectionString);
+    return new MySqlConnectionFactory(connectionString);
 }); // Product database.
 
 builder.Services.AddSingleton<IStorageDbConnectionFactory>(_ =>
@@ -34,7 +34,7 @@ builder.Services.AddSingleton<IStorageDbConnectionFactory>(_ =>
         builder.Configuration.GetConnectionString("Storage")
         ?? throw new InvalidOperationException("Missing Storage connection string.");
 
-    return new StorageDbConnectionFactory(connectionString);
+    return new MySqlConnectionFactory(connectionString);
 }); // File database.
 
 builder.Services.AddSingleton<IClock, SystemClock>();

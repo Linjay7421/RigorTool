@@ -1,7 +1,11 @@
 ﻿using MySqlConnector;
+using System.Data.Common;
 namespace Web.Public.Repository.Common
 {
-    public class MySqlConnectionFactory: IDbConnectionFactory
+    public class MySqlConnectionFactory: 
+        IDbConnectionFactory,
+        IStorageDbConnectionFactory,
+        IProductDbConnectionFactory
     {
         private readonly string _connectionString;
 
@@ -10,6 +14,9 @@ namespace Web.Public.Repository.Common
             _connectionString = connectionString;
         }
 
-        public MySqlConnection CreateConnection() => new MySqlConnection(_connectionString);
+        public MySqlConnection CreateConnection()
+        {
+            return new MySqlConnection(_connectionString);
+        }
     }
 }

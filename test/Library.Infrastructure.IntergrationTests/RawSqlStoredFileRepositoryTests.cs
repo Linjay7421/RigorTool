@@ -1,3 +1,5 @@
+using Library.Infrastructure.IntergrationTests.Common;
+using Microsoft.AspNetCore.Connections;
 using MySqlConnector;
 using Web.Public.Domains;
 using Web.Public.Repository;
@@ -8,19 +10,18 @@ namespace Repository.Tests
     [TestClass]
     public sealed class RawSqlStoredFileRepositoryTests
     {
-        private const string TestConnectionString =
-            "Server=localhost;Port=13306;Database=FileDB;Uid=root;Pwd=MyStrongPass123!;";
-
+        private StorageDatabaseFixture _databaseFixture = default!;
         private RawSqlStoredFileRepository _repository = default!;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            var factory = new StorageDbConnectionFactory(TestConnectionString);
-            _repository = new RawSqlStoredFileRepository(factory);
+            _databaseFixture = new StorageDatabaseFixture();
+            _repository = new RawSqlStoredFileRepository(_databaseFixture.ConnectionFactory);
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task AddAsync_ShouldPersistStoredFile()
         {
             var storedFile = CreateStoredFile();
@@ -39,6 +40,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetByIdAsync_ShouldReturnStoredFile()
         {
             var storedFile = CreateStoredFile();
@@ -50,6 +52,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetByObjectKeyAsync_ShouldReturnStoredFile()
         {
             var storedFile = CreateStoredFile();
@@ -61,6 +64,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetByIdAsync_ShouldReturnNull_WhenStoredFileDoesNotExist()
         {
             var result = await _repository.GetByIdAsync(Guid.NewGuid(), CancellationToken.None);
@@ -69,6 +73,7 @@ namespace Repository.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task GetByObjectKeyAsync_ShouldReturnNull_WhenStoredFileDoesNotExist()
         {
             var result = await _repository.GetByObjectKeyAsync($"missing/{Guid.NewGuid():N}.txt", CancellationToken.None);
@@ -92,9 +97,9 @@ namespace Repository.Tests
                 createdAt: new DateTimeOffset(2026, 7, 9, 0, 0, 0, TimeSpan.Zero));
         }
 
-        private static async Task<Web.Public.Domains.StoredFile?> GetStoredFileByIdAsync(Guid id)
+        private async Task<Web.Public.Domains.StoredFile?> GetStoredFileByIdAsync(Guid id)
         {
-            await using var connection = new MySqlConnection(TestConnectionString);
+            await using var connection = _databaseFixture.ConnectionFactory.CreateConnection();
             await connection.OpenAsync();
 
             const string sql = @"
@@ -116,9 +121,9 @@ namespace Repository.Tests
             return ReadStoredFile(reader);
         }
 
-        private static async Task InsertStoredFileAsync(Web.Public.Domains.StoredFile storedFile)
+        private async Task InsertStoredFileAsync(Web.Public.Domains.StoredFile storedFile)
         {
-            await using var connection = new MySqlConnection(TestConnectionString);
+            await using var connection = _databaseFixture.ConnectionFactory.CreateConnection();
             await connection.OpenAsync();
 
             const string sql = @"

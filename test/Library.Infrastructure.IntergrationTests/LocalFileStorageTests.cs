@@ -1,5 +1,6 @@
-using System.Text;
+using Library.Infrastructure.IntergrationTests.Common;
 using Microsoft.Extensions.Options;
+using System.Text;
 using Web.Public.Storage;
 
 namespace Storage.Tests
@@ -9,35 +10,23 @@ namespace Storage.Tests
     {
         private string _rootDirectory = default!;
         private LocalFileStorage _storage = default!;
+        private LocalFileStorageFixture _storageFixture = null!;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _rootDirectory = Path.Combine(
-                Path.GetTempPath(),
-                "RigorTools_LocalFileStorageTests",
-                Guid.NewGuid().ToString("N"));
-
-            Directory.CreateDirectory(_rootDirectory);
-
-            var options = Options.Create(new FileStorageOptions
-            {
-                RootPath = _rootDirectory
-            });
-
-            _storage = new LocalFileStorage(options);
+            _storageFixture = new LocalFileStorageFixture();
+            _storage = new LocalFileStorage(_storageFixture.Options);
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            if (Directory.Exists(_rootDirectory))
-            {
-                Directory.Delete(_rootDirectory, recursive: true);
-            }
+            _storageFixture.Dispose();
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task SaveAsync_ShouldCreateTxtFile()
         {
             const string objectKey = "note.txt";
@@ -47,12 +36,13 @@ namespace Storage.Tests
 
             await _storage.SaveAsync(objectKey, content, CancellationToken.None);
 
-            var savedPath = Path.Combine(_rootDirectory, objectKey);
+            var savedPath = Path.Combine(_storageFixture.RootDirectory, objectKey);
             Assert.IsTrue(File.Exists(savedPath));
             Assert.AreEqual(expectedContent, await File.ReadAllTextAsync(savedPath));
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task OpenReadAsync_ShouldReadSavedTxtFile()
         {
             const string objectKey = "read-me.txt";
@@ -70,6 +60,7 @@ namespace Storage.Tests
         }
 
         [TestMethod]
+        [TestCategory("Intergration")]
         public async Task DeleteAsync_ShouldDeleteTxtFile()
         {
             const string objectKey = "delete-me.txt";
@@ -77,7 +68,7 @@ namespace Storage.Tests
             await using var content = CreateTextStream("delete text content");
             await _storage.SaveAsync(objectKey, content, CancellationToken.None);
 
-            var savedPath = Path.Combine(_rootDirectory, objectKey);
+            var savedPath = Path.Combine(_storageFixture.RootDirectory, objectKey);
             Assert.IsTrue(File.Exists(savedPath));
 
             await _storage.DeleteAsync(objectKey, CancellationToken.None);
