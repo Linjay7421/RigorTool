@@ -3,4 +3,5 @@
   <Project Path="test/Library.Application.IntegrationTests/Library.Application.IntegrationTests.csproj" Id="8a812f23-9168-4732-a6a6-e522d8beba43" />
   <Project Path="test/Library.Application.UnitTests/Library.Application.UnitTests.csproj" />
   <Project Path="test/Library.Infrastructure.IntergrationTests/Library.Infrastructure.IntergrationTests.csproj" Id="092b1db1-a52b-47df-aa18-4b37cdfab0bc" />
+  <Project Path="Web.Library/Web.Library.csproj" Id="3712260b-20e2-4372-b292-954a19361763" />
 </Solution>
