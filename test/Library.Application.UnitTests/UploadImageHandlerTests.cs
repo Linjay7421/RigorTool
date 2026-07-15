@@ -1,11 +1,9 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Web.Public.Common.Abstraction;
-using Web.Public.Domains;
-using Web.Public.Features.Uploader;
-using Web.Public.Repository;
-using Web.Public.Storage;
+using Web.Library.Application.Abstractions;
+using Web.Library.Application.Features.Uploader;
+using Web.Library.Domain;
 
 namespace Handlers.Tests
 {

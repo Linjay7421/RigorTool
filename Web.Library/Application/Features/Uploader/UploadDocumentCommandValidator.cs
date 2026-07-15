@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using Web.Library.Application.Features.Uploader;
 
-namespace Web.Public.Features.Uploader
+namespace Web.Library.Application.Features.Uploader
 {
     public class UploadDocumentCommandValidator: AbstractValidator<UploadDocumentCommand>
     {

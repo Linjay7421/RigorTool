@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
-using Web.Library.Application.Features.Uploader;
 
-namespace Web.Public.Features.Uploader
+namespace Web.Library.Application.Features.Uploader
 {
     public sealed record UploadImageCommand(
         IFormFile File

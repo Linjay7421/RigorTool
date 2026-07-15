@@ -1,14 +1,10 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using System.Net.Mime;
-using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
-using System.Xml.Linq;
 using Web.Library.Application.Abstractions;
-using Web.Library.Application.Features.Uploader;
 using Web.Library.Domain;
 
-namespace Web.Public.Features.Uploader
+namespace Web.Library.Application.Features.Uploader
 {
     public class UploadImageHandler : IRequestHandler<UploadImageCommand, FileMetadata>
     {

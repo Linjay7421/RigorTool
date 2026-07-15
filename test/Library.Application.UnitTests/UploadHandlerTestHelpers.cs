@@ -1,16 +1,14 @@
 using System.Security.Cryptography;
 using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Web.Public.Common.Abstraction;
-using Web.Public.Common.Behaviors;
-using Web.Public.Domains;
-using Web.Public.Features.Uploader;
-using Web.Public.Repository;
-using Web.Public.Storage;
+using Web.Library.Application.Abstractions;
+using Web.Library.Application.Behaviors;
+using Web.Library.Application.Features.Uploader;
+using Web.Library.Domain;
 
 namespace Handlers.Tests
 {
