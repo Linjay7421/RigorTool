@@ -131,7 +131,7 @@ namespace Web.Library.Infrastructure.Persistence
                     )
                     SELECT 
                     	c.*,
-                        COALESCE(COUNT(DISTINCT pc.ProductId), 0) AS Total
+                        COALESCE(COUNT(DISTINCT pc.ProductId), 0) AS ProductCount
                     FROM Categories c
                     LEFT JOIN CategoryDescendants cd
                     	ON cd.AncestorId = c.Id
