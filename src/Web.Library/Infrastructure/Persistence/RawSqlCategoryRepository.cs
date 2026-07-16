@@ -30,7 +30,7 @@ namespace Web.Library.Infrastructure.Persistence
             return Convert.ToBoolean(result);
         }
 
-        public async Task<IReadOnlyList<Category>> GetAllAsync()
+        public async Task<IReadOnlyList<Category>> GetLookupAsync()
         {
             await using var connection = _connectionFactory.CreateConnection();
             await connection.OpenAsync();

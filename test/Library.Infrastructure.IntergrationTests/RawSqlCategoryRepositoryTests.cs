@@ -19,11 +19,11 @@ namespace Persistence.Repository.Tests
 
         [TestMethod]
         [TestCategory("Intergration")]
-        public async Task GetAll_ShouldReturnAllCategories()
+        public async Task GetLookup_ShouldReturnAllCategories()
         {
             var categoryReader = new RawSqlCategoryRepository(_databaseFixture.ConnectionFactory);
 
-            var categories = await categoryReader.GetAllAsync();
+            var categories = await categoryReader.GetLookupAsync();
 
             Assert.IsTrue(categories.Any());
         }

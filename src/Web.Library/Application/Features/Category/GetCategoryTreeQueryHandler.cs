@@ -14,7 +14,7 @@ namespace Web.Library.Application.Features.Category
 
         public async Task<IReadOnlyList<CategoryNode>> Handle(GetCategoryTreeQuery request, CancellationToken cancellationToken)
         {
-            var categories = await _categoryReader.GetAllAsync();
+            var categories = await _categoryReader.GetLookupAsync();
 
             ILookup<Guid?, Category> childrenLookup =
                 categories
