@@ -7,5 +7,6 @@ namespace Web.Library.Application.Abstractions
         Task<IReadOnlyList<Category>> GetLookupAsync();
         Task<IReadOnlyList<Category>> GetByIdAsync(Guid id);
         Task<bool> ExistsAsync(Guid id);
+        Task<IReadOnlyList<CategoryTreeRow>> GetTreeAsync();
     }
 }

@@ -17,7 +17,7 @@ namespace Web.Library.Infrastructure.Persistence
         public async Task<bool> ExistsAsync(Guid id)
         {
             await using var connection = _connectionFactory.CreateConnection();
-                        await connection.OpenAsync();
+            await connection.OpenAsync();
 
             const string sql = @"
                 SELECT EXISTS(SELECT 1 FROM ProductDB.Categories WHERE Id = @CategoryId) AS 'Exists';
@@ -47,14 +47,14 @@ namespace Web.Library.Infrastructure.Persistence
             var categoriyList = new List<Category>();
             var ordinal = reader.GetOrdinal("ParentId");
 
-            while (await reader.ReadAsync()) 
+            while (await reader.ReadAsync())
             {
                 categoriyList.Add(new Category
-                    {
-                        Id = reader.GetGuid("Id"),
-                        ParentId = reader.IsDBNull(ordinal) ? null : reader.GetGuid("ParentId"),
-                        Name = reader.GetString("Name"),
-                    }
+                {
+                    Id = reader.GetGuid("Id"),
+                    ParentId = reader.IsDBNull(ordinal) ? null : reader.GetGuid("ParentId"),
+                    Name = reader.GetString("Name"),
+                }
                 );
             }
 
@@ -104,6 +104,66 @@ namespace Web.Library.Infrastructure.Persistence
                 );
             }
             return categoriyList;
+        }
+
+        public async Task<IReadOnlyList<CategoryTreeRow>> GetTreeAsync()
+        {
+            await using (var connection = _connectionFactory.CreateConnection())
+            {
+                await connection.OpenAsync();
+
+                const string sql = """
+                    WITH RECURSIVE CategoryDescendants AS
+                    (
+                        SELECT
+                            c.Id AS AncestorId,
+                            c.Id AS DescendantId
+                        FROM Categories c
+
+                        UNION ALL
+
+                        SELECT
+                            cd.AncestorId,
+                            child.Id
+                        FROM CategoryDescendants cd
+                        INNER JOIN Categories child
+                            ON child.ParentId = cd.DescendantId
+                    )
+                    SELECT 
+                    	c.*,
+                        COALESCE(COUNT(DISTINCT pc.ProductId), 0) AS Total
+                    FROM Categories c
+                    LEFT JOIN CategoryDescendants cd
+                    	ON cd.AncestorId = c.Id
+                    LEFT JOIN ProductCategories pc
+                    	ON pc.CategoryId = cd.DescendantId
+                    GROUP BY c.Id, c.Name, c.ParentId, c.createdAt, c.IsActive;
+                    """;
+
+                using var command = new MySqlCommand(sql, connection);
+
+                await using var reader = await command.ExecuteReaderAsync();
+
+                var list = new List<CategoryTreeRow>();
+                var ordinal = reader.GetOrdinal("ParentId");
+
+                while (await reader.ReadAsync())
+                {
+                    list.Add(
+                        new CategoryTreeRow
+                        {
+                            Id = reader.GetGuid("Id"),
+                            ParentId = reader.IsDBNull(ordinal) ? null : reader.GetGuid("ParentId"),
+                            Name = reader.GetString("Name"),
+                            IsActive = reader.GetBoolean("IsActive"),
+                            CreatedAt = reader.GetDateTime("CreatedAt"),
+                            ProductCount = reader.GetInt32("ProductCount")
+                        }
+                    );
+                }
+
+                return list;
+            }
         }
     }
 }
