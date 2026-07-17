@@ -14,7 +14,9 @@ namespace Web.Library.Application.Features.Category
 
         public async Task<IReadOnlyList<CategoryNode>> Handle(GetCategoryLookUpQuery request, CancellationToken cancellationToken)
         {
-            var categories = await _categoryReader.GetLookupAsync();
+            var categories = request.CategoryId is null
+                ? await _categoryReader.GetLookupAsync()
+                : await _categoryReader.GetByIdAsync(request.CategoryId.Value);
 
             ILookup<Guid?, Category> childrenLookup =
                 categories
@@ -28,17 +30,22 @@ namespace Web.Library.Application.Features.Category
                     {
                         Id = c.Id,
                         Name = c.Name,
+                        ParentId = c.ParentId,
                         Children = BuildChildren(c.Id)
                     })
                     .ToList();
             }
 
-            var tree = categories
-                .Where(c => c.ParentId is null)
+            var rootCategories = request.CategoryId is null
+                ? categories.Where(c => c.ParentId is null)
+                : categories.Where(c => c.Id == request.CategoryId.Value);
+
+            var tree = rootCategories
                 .Select(c => new CategoryNode
                 {
                     Id = c.Id,
                     Name = c.Name,
+                    ParentId = c.ParentId,
                     Children = BuildChildren(c.Id)
                 })
                 .ToList();
