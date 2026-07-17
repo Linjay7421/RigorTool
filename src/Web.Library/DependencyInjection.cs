@@ -30,6 +30,7 @@ namespace Web.Library
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
                 cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
                 cfg.RegisterServicesFromAssembly(typeof(GetCategoryLookUpQueryHandler).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(GetCategoryTreeQueryHandler).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(GetPagedSummaryQueryHandler).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(UploadImageHandler).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(UploadDocumentHandler).Assembly);
