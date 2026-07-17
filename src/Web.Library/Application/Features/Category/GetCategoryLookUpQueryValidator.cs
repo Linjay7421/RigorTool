@@ -2,9 +2,9 @@
 
 namespace Web.Library.Application.Features.Category
 {
-    public class GetCategoryTreeQueryValidator: AbstractValidator<GetCategoryTreeQuery>
+    public class GetCategoryLookUpQueryValidator: AbstractValidator<GetCategoryLookUpQuery>
     {
-        public GetCategoryTreeQueryValidator() 
+        public GetCategoryLookUpQueryValidator() 
         {
             // Category id
             RuleFor(x => x.CategoryId)

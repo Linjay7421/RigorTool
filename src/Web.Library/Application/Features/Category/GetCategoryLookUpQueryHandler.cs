@@ -3,16 +3,16 @@ using Web.Library.Application.Abstractions;
 
 namespace Web.Library.Application.Features.Category
 {
-    public class GetCategoryTreeQueryHandler : IRequestHandler<GetCategoryTreeQuery, IReadOnlyList<CategoryNode>>
+    public class GetCategoryLookUpQueryHandler : IRequestHandler<GetCategoryLookUpQuery, IReadOnlyList<CategoryNode>>
     {
         private readonly ICategoryRepository _categoryReader;
 
-        public GetCategoryTreeQueryHandler(ICategoryRepository categoryRepository)
+        public GetCategoryLookUpQueryHandler(ICategoryRepository categoryRepository)
         {
             _categoryReader = categoryRepository;
         }
 
-        public async Task<IReadOnlyList<CategoryNode>> Handle(GetCategoryTreeQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<CategoryNode>> Handle(GetCategoryLookUpQuery request, CancellationToken cancellationToken)
         {
             var categories = await _categoryReader.GetLookupAsync();
 

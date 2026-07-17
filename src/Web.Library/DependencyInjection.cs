@@ -20,7 +20,7 @@ namespace Web.Library
         {
             // Flunent Validator
             services.AddScoped<IValidator<GetPagedSummaryQuery>, GetPagedSummaryQueryValidator>();
-            services.AddScoped<IValidator<GetCategoryTreeQuery>, GetCategoryTreeQueryValidator>();
+            services.AddScoped<IValidator<GetCategoryLookUpQuery>, GetCategoryLookUpQueryValidator>();
             services.AddScoped<IValidator<UploadDocumentCommand>, UploadDocumentCommandValidator>();
             services.AddScoped<IValidator<UploadImageCommand>, UploadImageCommandValidator>();
 
@@ -29,7 +29,7 @@ namespace Web.Library
             {
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
                 cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-                cfg.RegisterServicesFromAssembly(typeof(GetCategoryTreeQueryHandler).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(GetCategoryLookUpQueryHandler).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(GetPagedSummaryQueryHandler).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(UploadImageHandler).Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(UploadDocumentHandler).Assembly);

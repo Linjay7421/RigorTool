@@ -3,7 +3,7 @@
 
 namespace Web.Library.Application.Features.Category
 {
-    public sealed record GetCategoryTreeQuery(
+    public sealed record GetCategoryLookUpQuery(
             Guid? CategoryId
         ) : IRequest<IReadOnlyList<CategoryNode>>;
 }
