@@ -1,0 +1,4 @@
+interface:
+  display_name: "RigorTools Test Writer"
+  short_description: "Write focused tests for RigorTools"
+  default_prompt: "Use $rigortools-test-writer to add or improve tests for this RigorTools feature."
