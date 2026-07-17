@@ -1,5 +1,7 @@
 # RigorTools Infrastructure Testing Guidelines
 
+This file is retained for compatibility. Prefer `infrastructure-integration-test.md` for current repository, SQL, schema, fixture, and provider guidance.
+
 Infrastructure tests cover implementations that depend on external boundaries. Use them for repositories, SQL, schema assumptions, migrations, connection factories, and other persistence or provider integrations.
 
 Keep infrastructure tests separate from application tests. They are usually slower, have more setup, and answer whether the concrete implementation works against the real boundary.

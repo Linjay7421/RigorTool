@@ -1,5 +1,10 @@
 # RigorTools Application Testing Guidelines
 
+This file is retained for compatibility. Prefer the focused references:
+
+- `application-unit-test.md` for mocked application-layer tests.
+- `application-integration-test.md` for application DI/MediatR tests, including fixture-backed repository tests when requested.
+
 Application tests cover use-case behavior without real database access. Prefer mocked repositories, deterministic in-memory data, direct handler construction, direct validators, and direct behavior invocation.
 
 Use MediatR integration tests only when the scenario is about DI registration, request handler discovery, pipeline ordering, or end-to-end pipeline wiring.
