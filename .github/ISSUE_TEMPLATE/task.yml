@@ -1,0 +1,47 @@
+name: Task
+description: Create a development task
+title: ""
+
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What problem are we solving?
+      placeholder: |
+        Example:
+        Allow administrators to upload product images.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      description: List the implementation tasks.
+      placeholder: |
+        - [ ] Create command
+        - [ ] Implement repository
+        - [ ] Add API endpoint
+        - [ ] Create UI
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What conditions must be met before this issue is considered done?
+      placeholder: |
+        - [ ] Upload succeeds
+        - [ ] Metadata saved
+        - [ ] Unit tests pass
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: References, links, or implementation notes.
+      placeholder: Optional
